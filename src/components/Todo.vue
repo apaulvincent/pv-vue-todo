@@ -27,9 +27,8 @@
                     <input type='text' v-model="todo.project" >
                 </div>
                 <div class='ui two button attached buttons'>
-                    <button class='ui basic blue button' v-on:click="hideForm">
-                        Close X
-                    </button>
+                    <button class='ui red button' v-on:click="updateTodo(todo)">Update</button>
+                    <button class='ui blue button' v-on:click="hideForm">Cancel</button>
                 </div>
             </div>
         </div>
@@ -43,6 +42,7 @@
 <script type="text/javascript">
 
 import sweetalert from 'sweetalert'
+import {db} from '../utils/firebase'
 
 export default {
   props: ['todo'],
@@ -62,13 +62,44 @@ export default {
       const vm = this
       sweetalert({title: 'Warning', text: 'You sure you want to delete?', showCancelButton: true}, function (isConfirm) {
         if (isConfirm) {
-          vm.$emit('delete-todo', todo)
+          db.ref(`todos/${todo.id}`).remove(function (err) {
+            if (!err) {
+              vm.$emit('delete-todo', todo)
+            } else {
+              console.log('Something went wrong!')
+            }
+          })
         }
       })
     },
     completeTodo (todo) {
-      this.$emit('complete-todo', todo)
-      sweetalert('Success!', 'Todo Completed!', 'success')
+      const vm = this
+      db.ref(`todos/${todo.id}`).update({
+        done: true,
+        project: todo.project,
+        title: todo.title}, function (err) {
+        if (!err) {
+          vm.$emit('complete-todo', todo)
+          sweetalert('Success!', 'Todo Completed!', 'success')
+        } else {
+          console.log('Something went wrong...')
+        }
+      })
+    },
+    updateTodo (todo) {
+      if (todo.title !== '' && todo.project !== '') {
+        db.ref(`todos/${todo.id}`).update({
+          done: todo.done,
+          project: todo.project,
+          title: todo.title}, function (err) {
+          if (!err) {
+            sweetalert('Success!', 'Todo Updated!', 'success')
+          } else {
+            console.log('Something went wrong...')
+          }
+        })
+      }
+      this.hideForm()
     }
   }
 }

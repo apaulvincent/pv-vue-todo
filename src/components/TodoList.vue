@@ -1,9 +1,7 @@
 <template>
   <div>
-    <p>Completed Tasks: {{ todos.filter(todo => {return todo.done === true}).length }}</p>
-    <p>Pending Tasks: {{ todos.filter(todo => {return todo.done === false}).length }}</p>
 
-    <todo v-for="(todo, index) in todos" v-bind:todo="todo" v-on:delete-todo="deleteTodo" v-on:complete-todo="completeTodo" :key="index" :todo.sync="todo"/>
+    <todo v-for="todo in todos" v-bind:todo="todo" v-on:delete-todo="deleteTodo" v-on:complete-todo="completeTodo" :key="todo.id" :todo.sync="todo"/>
 
   </div>
 </template>
@@ -26,6 +24,9 @@ export default {
       const todoIndex = this.todos.indexOf(todo)
       this.todos[todoIndex].done = true
     }
+  },
+  created: function () {
+
   }
 }
 </script>
