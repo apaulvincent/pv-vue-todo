@@ -93,7 +93,7 @@ export default {
           project: todo.project,
           title: todo.title}, function (err) {
           if (!err) {
-            sweetalert('Success!', 'Todo Updated!', 'success')
+            // sweetalert('Success!', 'Todo Updated!', 'success')
           } else {
             console.log('Something went wrong...')
           }

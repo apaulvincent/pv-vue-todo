@@ -1,19 +1,20 @@
 <template>
   <div id="app">
+  <div class="ui main container">
     <p>Completed Tasks: {{ todos.filter(todo => {return todo.done === true}).length }}</p>
     <p>Pending Tasks: {{ todos.filter(todo => {return todo.done === false}).length }}</p>
 
     <create-todo v-on:create-todo="createTodo"/>
     <todo-list v-bind:todos="todos"></todo-list>
   </div>
+  </div>
 </template>
 
 <script>
 
-import sweetalert from 'sweetalert'
 import TodoList from './components/TodoList'
 import CreateTodo from './components/CreateTodo'
-import {db, fireTodo} from './utils/firebase'
+import {fireTodo} from './utils/firebase'
 
 export default {
   name: 'app',
@@ -41,15 +42,7 @@ export default {
       })
     },
     createTodo (newTodo) {
-      const vm = this
-      db.ref(`todos/${fireTodo.push().key}`).set(newTodo, function (err) {
-        if (!err) {
-          vm.todos.push(newTodo)
-          sweetalert('Success!', 'To-Do created!', 'success')
-        } else {
-          sweetalert('Something Wrong!', 'Please try again', 'warning')
-        }
-      })
+      this.todos.push(newTodo)
     }
   },
   mounted: function () {
@@ -65,6 +58,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin: 30px 0 60px;
 }
 </style>

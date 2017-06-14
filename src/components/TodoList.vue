@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="ui four doubling stackable cards">
 
     <todo v-for="todo in todos" v-bind:todo="todo" v-on:delete-todo="deleteTodo" v-on:complete-todo="completeTodo" :key="todo.id" :todo.sync="todo"/>
 

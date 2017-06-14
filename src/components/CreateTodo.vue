@@ -15,12 +15,8 @@
                 <input v-model="projectText" type='text'>
                 </div>
                 <div class='ui two button attached buttons'>
-                <button class='ui blue button' v-on:click="sendForm()">
-                    Create
-                </button>
-                <button class='ui red button' v-on:click="closeForm">
-                    Cancel
-                </button>
+                <button class='ui blue button' v-on:click="createTodo">Create</button>
+                <button class='ui red button' v-on:click="closeForm">Cancel</button>
                 </div>
             </div>
             </div>
@@ -29,6 +25,10 @@
 </template>
 
 <script>
+
+import sweetalert from 'sweetalert'
+import {db, fireTodo} from '../utils/firebase'
+
 export default {
   data () {
     return {
@@ -44,20 +44,29 @@ export default {
     closeForm () {
       this.isCreating = false
     },
-    sendForm () {
-      if (this.titleText.length > 0 && this.projectText.length > 0) {
-        const title = this.titleText
-        const project = this.projectText
+    createTodo () {
+      const vm = this
+      const id = fireTodo.push().key
+      const title = this.titleText
+      const project = this.projectText
 
-        this.$emit('create-todo', {
-          title,
-          project,
-          done: false
+      if (title.length > 0 && project.length > 0) {
+        db.ref(`todos/${id}`).set({id, title, project, done: false}, function (err) {
+          if (!err) {
+            vm.$emit('create-todo', {
+              id,
+              title,
+              project,
+              done: false
+            })
+            vm.titleText = ''
+            vm.projectText = ''
+            vm.isCreating = false
+            sweetalert('Success!', 'To-Do created!', 'success')
+          } else {
+            sweetalert('Something Wrong!', 'Please try again', 'warning')
+          }
         })
-
-        this.titleText = ''
-        this.projectText = ''
-        this.isCreating = false
       }
     }
   }
