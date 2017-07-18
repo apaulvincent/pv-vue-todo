@@ -26,6 +26,10 @@
                     <label>Project</label>
                     <input type='text' v-model="todo.project" >
                 </div>
+                <div class='field'>
+                    <label>{{ todo.done ? 'Undone' : 'Done' }}</label>
+                    <input type="checkbox" v-model="todo.done">
+                </div>
                 <div class='ui two button attached buttons'>
                     <button class='ui red button' v-on:click="updateTodo(todo)">Update</button>
                     <button class='ui blue button' v-on:click="hideForm">Cancel</button>
@@ -106,5 +110,5 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style scoped>
 </style>

@@ -1,8 +1,7 @@
 <template>
   <div class="ui four doubling stackable cards">
-
-    <todo v-for="todo in todos" v-bind:todo="todo" v-on:delete-todo="deleteTodo" v-on:complete-todo="completeTodo" :key="todo.id" :todo.sync="todo"/>
-
+    <todo v-for="todo in todos" v-bind:todo="todo" v-on:delete-todo="deleteTodo" v-on:complete-todo="completeTodo" :key="todo.id" :todo.sync="todo">
+    </todo>
   </div>
 </template>
 
@@ -32,5 +31,5 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
+<style scoped>
 </style>

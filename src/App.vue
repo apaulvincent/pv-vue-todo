@@ -4,7 +4,7 @@
     <p>Completed Tasks: {{ todos.filter(todo => {return todo.done === true}).length }}</p>
     <p>Pending Tasks: {{ todos.filter(todo => {return todo.done === false}).length }}</p>
 
-    <create-todo v-on:create-todo="createTodo"/>
+    <create-todo v-on:create-todo="createTodo"></create-todo>
     <todo-list v-bind:todos="todos"></todo-list>
   </div>
   </div>
@@ -51,7 +51,7 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
